@@ -217,4 +217,4 @@ DramaForge 的用户可见变更记录，按版本列出新增功能、体验改
 - 部分功能仍需服务端配合，暂不能作为完整生产能力使用。
 
 ---
-<sub>自动同步自内部仓库 · 更新于 2026-10-17 · <a href="https://roshanca.github.io/dramaforge-changelog/">网页版</a></sub>
+<sub>自动同步自内部仓库 · 更新于 2026-10-17 · <a href="https://hi.roshanca.com/dramaforge-changelog/">网页版</a></sub>
