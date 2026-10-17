@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DramaForge 更新日志</title>
+<style>
+  :root {
+    --accent: #7a5af8;
+    --accent-soft: rgba(122, 90, 248, .12);
+    --bg: #fbfbfd;
+    --panel: #ffffff;
+    --text: #1d2129;
+    --text-2: #4e5561;
+    --text-3: #8a93a3;
+    --border: #e6e8ef;
+    --code-bg: #f2f3f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1015;
+      --panel: #16181f;
+      --text: #e8eaf0;
+      --text-2: #b6bcc9;
+      --text-3: #6d7484;
+      --border: #262a36;
+      --code-bg: #1e212b;
+      --accent-soft: rgba(122, 90, 248, .22);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+      "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 1080px; margin: 0 auto; padding: 14px 24px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .logo {
+    font-weight: 700; font-size: 17px; letter-spacing: .2px;
+    display: flex; align-items: center; gap: 10px; white-space: nowrap;
+  }
+  .logo .dot {
+    width: 10px; height: 10px; border-radius: 3px;
+    background: linear-gradient(135deg, #7a5af8, #b18cff);
+  }
+  .logo small { font-weight: 400; color: var(--text-3); font-size: 13px; }
+  .search {
+    margin-left: auto; position: relative; width: min(280px, 42vw);
+  }
+  .search input {
+    width: 100%; padding: 7px 12px 7px 32px; font-size: 14px;
+    color: var(--text); background: var(--code-bg);
+    border: 1px solid var(--border); border-radius: 8px; outline: none;
+  }
+  .search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .search svg {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; fill: var(--text-3);
+  }
+
+  /* ---------- layout ---------- */
+  .layout {
+    max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px;
+    display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 40px;
+  }
+  nav {
+    position: sticky; top: 84px; align-self: start;
+    max-height: calc(100vh - 110px); overflow: auto;
+    font-size: 13.5px;
+  }
+  nav .nav-title { color: var(--text-3); font-size: 12px; margin: 0 0 8px; letter-spacing: .4px; }
+  nav a {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+    padding: 5px 10px; border-radius: 7px; color: var(--text-2);
+    border-left: 2px solid transparent;
+  }
+  nav a:hover { background: var(--code-bg); text-decoration: none; }
+  nav a.active { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); }
+  nav a .nav-date { color: var(--text-3); font-size: 11.5px; white-space: nowrap; }
+
+  /* ---------- content ---------- */
+  main { min-width: 0; }
+  main > h1 { display: none; } /* 页面标题用 header 呈现，隐藏 md 里重复的 h1 */
+  main > p:first-of-type {
+    color: var(--text-3); font-size: 13.5px; border-left: 3px solid var(--border);
+    padding-left: 12px; margin-top: 0;
+  }
+  h2 {
+    font-size: 22px; margin: 52px 0 6px; padding-top: 8px;
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    border-top: 1px solid var(--border); padding-top: 30px;
+  }
+  h2 .ver { font-weight: 700; }
+  h2 .date { font-size: 14px; font-weight: 400; color: var(--text-3); }
+  h2 .latest {
+    font-size: 11.5px; font-weight: 600; color: #fff;
+    background: var(--accent); border-radius: 999px; padding: 2px 10px;
+    letter-spacing: .5px;
+  }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 10px; }
+  h3 {
+    font-size: 12.5px; letter-spacing: .8px; text-transform: uppercase;
+    margin: 26px 0 6px; font-weight: 700;
+  }
+  h3.added   { color: #28a164; }
+  h3.changed { color: #3a82f7; }
+  h3.fixed   { color: #e0912f; }
+  h3.removed { color: #d64545; }
+  h3.notes   { color: var(--text-3); }
+  ul { padding-left: 22px; margin: 6px 0; }
+  li { margin: 7px 0; color: var(--text-2); }
+  li::marker { color: var(--accent); }
+  code {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 5px; padding: 1px 6px; font-size: .92em;
+  }
+  .hidden { display: none !important; }
+  .empty {
+    color: var(--text-3); text-align: center; padding: 60px 0; font-size: 14.5px;
+  }
+  footer {
+    margin-top: 60px; padding-top: 18px; border-top: 1px solid var(--border);
+    color: var(--text-3); font-size: 12.5px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+
+  /* ---------- mobile ---------- */
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; gap: 0; padding-top: 14px; }
+    nav {
+      position: static; max-height: none; display: flex; gap: 6px;
+      overflow-x: auto; padding-bottom: 10px; margin-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    nav .nav-title { display: none; }
+    nav a { white-space: nowrap; border-left: none; border: 1px solid var(--border); border-radius: 999px; padding: 3px 12px; }
+    nav a .nav-date { display: none; }
+    nav a.active { border-color: var(--accent); }
+    h2 { font-size: 19px; margin-top: 40px; }
+  }
+</style>
+<script type="text/javascript" nonce="5eb7dfd47371492fb4158cf8118" src="//injections.adguard.org?ts=1792247035149&amp;type=content-script&amp;dmn=devin-public-attachments.s3.dualstack.us-west-2.amazonaws.com&amp;url=http%3A%2F%2Fdevin-public-attachments.s3.dualstack.us-west-2.amazonaws.com%2Fattachments_private%2Forg-4e0071089dd845c7b4a7215e3bed1e5a%2F310f9533-179d-4d0c-a79e-c40bbd0eb387%3Fresponse-content-disposition%3Dattachment%253B%2520filename%253D%2522index.html%2522%253B%2520filename%252A%253DUTF-8%2527%2527index.html%26response-content-type%3Dtext%252Fhtml%26AWSAccessKeyId%3DASIAT64VHFT73NSXTKRD%26Signature%3DotZqM1LVkOJHiF2kh5KIc4ofqEQ%253D%26x-amz-security-token%3DIQoJb3JpZ2luX2VjEDcaCXVzLXdlc3QtMiJIMEYCIQDze87n9znYTWqjuEcac1vxeqvXVAsIvecOF4yOOWbipAIhAMTWjxMuYD%252Bm5m7CRTjsrNafQAI8y9R84BZoo1bKhwfDKoQFCP%252F%252F%252F%252F%252F%252F%252F%252F%252F%252F%252FwEQARoMMjcyNTA2NDk4MzAzIgzlpWCUKM9PxGgM0h4q2ARcV%252BlJmRO8EyfMCOmjTebH5%252FcLqba0yP97yJT821l8KLKDrdeUi%252FZ1zJ8aw0KsPx8BEw5wI%252BIDLqVYWG47ebfi9y6iBEC%252F66ZKQJB5xAze8ymjN9aqCk0wgsx0KpeLnHo9R6uBnL5IM%252BxEl%252BTmbgSwyWkSeM2vu1zrd7Yal0Bxw%252FsPxKSMM0ojo538MA4yTaMCWtsIbcbDl0mZaKzdDGVw2TsvHmQFotGsXh%252BtB9hG5CQOS5Jrg3gsh%252F1Kiafe668hODUJWM5n1oeeRW1pbPx3eWJi2PiZBICqO9BClxqsE4w9UF%252BdZRBV2dulUdwhHFCsSBKt6wQ3OfZrd4m8NBH5qFqWczXCvvQT8Xq7vXxzSQzfYQ6t79DoriH%252F9TOHhczdqFTmjuSL9gXbpLumoD35Mr%252FV1dJoPIc2HOoSu2IemCyg%252F8ejeTr15smhSb%252BqTmLHJjP%252BZhgfLpJAD6tYfXMNPyKN3mMqMdag78gtFgL0GMKaMIFGHXm0l2Wm%252B%252BNaEOewtys0P0G9d5QwSYfOPnbG%252FSUfb6Qp4vw%252BjHYrDfGupj0SSboQ3MwwuXPYqZEbSFW%252F1kDp1xhNcz%252B2okfbozsWyLk3Vp4jMoFZ2LdSWvAN0yoJgFy8z5Sobkv9K6jZTNzBm%252FrHa%252BxMEYcV%252FD4mggWGOTCln4Za9gAA%252F3tnRB%252F1VpAMlZYBriWbvlPDib0mpmpKngSBRPueFtizROgR2ze1U3Sykh6Hz%252BpvRv8Rs5xSCO2Ry5U5rCT%252BxVsW99iEu4CYkCZAbU3V5Nh3SClFlbRrsP4Oo94tIV0wiYzO1gY6lwGpIrhwxjyi666AiNyhVLIKRuLyJ7jQK6LmEVcS5GtldS0LUVRM7Lb5F36vX0bhjGA0LMHmanxKAWixTcPBm2ER2gWTGpDb4UFgSPSZgtm%252FLKE7%252FLg4bzcwCmTRkA6QwYuc5kBkw1CFsHlkPv6JK2aFOsT1fH%252BvSKux3xjJ8HrKcMhIrv1lOZwLsbZVbVJ6wccTBdYaxI%252FY%26Expires%3D1792249434&amp;app=com.google.Chrome&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="5eb7dfd47371492fb4158cf8118" src="//injections.adguard.org?ts=1792247035149&amp;name=AdGuard%20Extra&amp;type=user-script"></script></head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><span class="dot"></span>DramaForge <small>更新日志</small></div>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><path d="M10 2a8 8 0 1 0 4.9 14.3l5 5a1.4 1.4 0 0 0 2-2l-5-5A8 8 0 0 0 10 2zm0 2.6a5.4 5.4 0 1 1 0 10.8 5.4 5.4 0 0 1 0-10.8z"/></svg>
+      <input id="filter" type="search" placeholder="搜索更新内容…" autocomplete="off">
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav id="nav"><div class="nav-title">版本</div></nav>
+  <main id="content"><div class="empty">加载中…</div></main>
+</div>
+
+<script src="marked.min.js"></script>
+<script>
+(function () {
+  var content = document.getElementById('content');
+  var nav = document.getElementById('nav');
+  var filter = document.getElementById('filter');
+
+  fetch('CHANGELOG.md', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function (md) {
+      content.innerHTML = marked.parse(md);
+      decorate();
+      buildNav();
+      observe();
+      footer();
+    })
+    .catch(function () {
+      content.innerHTML = '<div class="empty">无法加载 CHANGELOG.md</div>';
+    });
+
+  function decorate() {
+    // h2: 拆分版本号与日期；最新正式版本加徽标
+    var h2s = content.querySelectorAll('h2');
+    var markedLatest = false;
+    h2s.forEach(function (h, i) {
+      var t = h.textContent.trim();
+      var m = t.match(/^\[?([^\]\-]+?)\]?\s*-\s*(\d{4}-\d{2}-\d{2})?$/);
+      var ver = (m ? m[1] : t).replace(/^\[|\]$/g, '');
+      var date = m && m[2] ? m[2] : '';
+      var isUnreleased = /unreleased|未发布/i.test(ver);
+      h.id = 'v-' + ver.replace(/[^\w.-]+/g, '-').toLowerCase();
+      h.innerHTML = '<span class="ver">' + ver + '</span>' +
+        (date ? '<span class="date">' + date + '</span>' : '');
+      if (!isUnreleased && !markedLatest) {
+        h.insertAdjacentHTML('beforeend', '<span class="latest">最新</span>');
+        markedLatest = true;
+      }
+    });
+    // h3: 按类型加色
+    content.querySelectorAll('h3').forEach(function (h) {
+      var t = h.textContent.trim().toLowerCase();
+      ['added', 'changed', 'fixed', 'removed', 'notes'].forEach(function (k) {
+        if (t.indexOf(k) === 0) h.classList.add(k);
+      });
+      var map = { added: '新增', changed: '改进', fixed: '修复', removed: '移除', notes: '备注' };
+      var key = h.className;
+      if (map[key]) h.textContent = map[key];
+    });
+  }
+
+  function buildNav() {
+    var h2s = content.querySelectorAll('h2');
+    h2s.forEach(function (h) {
+      var ver = h.querySelector('.ver').textContent;
+      var date = h.querySelector('.date') ? h.querySelector('.date').textContent : '';
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.innerHTML = '<span>' + ver + '</span>' +
+        (date ? '<span class="nav-date">' + date.slice(5) + '</span>' : '');
+      a.dataset.target = h.id;
+      nav.appendChild(a);
+    });
+  }
+
+  function observe() {
+    var links = nav.querySelectorAll('a');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.dataset.target === e.target.id);
+        });
+      });
+    }, { rootMargin: '-10% 0px -75% 0px' });
+    content.querySelectorAll('h2').forEach(function (h) { io.observe(h); });
+  }
+
+  // 搜索：过滤 li，隐藏被清空的分组
+  filter.addEventListener('input', function () {
+    var q = filter.value.trim().toLowerCase();
+    var items = content.querySelectorAll('li');
+    items.forEach(function (li) {
+      li.classList.toggle('hidden', !!q && li.textContent.toLowerCase().indexOf(q) === -1);
+    });
+    // 隐藏全空的小节标题与版本块
+    content.querySelectorAll('h3').forEach(function (h) {
+      var el = h.nextElementSibling, anyVisible = false;
+      while (el && el.tagName !== 'H3' && el.tagName !== 'H2') {
+        if (el.tagName === 'UL' && el.querySelector('li:not(.hidden)')) anyVisible = true;
+        el = el.nextElementSibling;
+      }
+      h.classList.toggle('hidden', !!q && !anyVisible);
+    });
+    content.querySelectorAll('h2').forEach(function (h) {
+      var el = h.nextElementSibling, anyVisible = false;
+      while (el && el.tagName !== 'H2') {
+        if ((el.tagName === 'UL' && el.querySelector('li:not(.hidden)')) ||
+            (el.tagName === 'P' && !q)) anyVisible = true;
+        el = el.nextElementSibling;
+      }
+      h.classList.toggle('hidden', !!q && !anyVisible);
+    });
+  });
+
+  function footer() {
+    var f = document.createElement('footer');
+    f.innerHTML = '<span>DramaForge 产品更新记录</span>' +
+      '<a href="https://dramaforge.video" target="_blank" rel="noopener">dramaforge.video ↗</a>';
+    content.appendChild(f);
+  }
+})();
+</script>
+</body>
+</html>
