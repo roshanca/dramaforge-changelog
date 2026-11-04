@@ -156,7 +156,7 @@
     h2 { font-size: 19px; margin-top: 40px; }
   }
 </style>
-<script type="text/javascript" nonce="5eb7dfd47371492fb4158cf8118" src="//injections.adguard.org?ts=1792247035149&amp;type=content-script&amp;dmn=devin-public-attachments.s3.dualstack.us-west-2.amazonaws.com&amp;url=http%3A%2F%2Fdevin-public-attachments.s3.dualstack.us-west-2.amazonaws.com%2Fattachments_private%2Forg-4e0071089dd845c7b4a7215e3bed1e5a%2F310f9533-179d-4d0c-a79e-c40bbd0eb387%3Fresponse-content-disposition%3Dattachment%253B%2520filename%253D%2522index.html%2522%253B%2520filename%252A%253DUTF-8%2527%2527index.html%26response-content-type%3Dtext%252Fhtml%26AWSAccessKeyId%3DASIAT64VHFT73NSXTKRD%26Signature%3DotZqM1LVkOJHiF2kh5KIc4ofqEQ%253D%26x-amz-security-token%3DIQoJb3JpZ2luX2VjEDcaCXVzLXdlc3QtMiJIMEYCIQDze87n9znYTWqjuEcac1vxeqvXVAsIvecOF4yOOWbipAIhAMTWjxMuYD%252Bm5m7CRTjsrNafQAI8y9R84BZoo1bKhwfDKoQFCP%252F%252F%252F%252F%252F%252F%252F%252F%252F%252F%252FwEQARoMMjcyNTA2NDk4MzAzIgzlpWCUKM9PxGgM0h4q2ARcV%252BlJmRO8EyfMCOmjTebH5%252FcLqba0yP97yJT821l8KLKDrdeUi%252FZ1zJ8aw0KsPx8BEw5wI%252BIDLqVYWG47ebfi9y6iBEC%252F66ZKQJB5xAze8ymjN9aqCk0wgsx0KpeLnHo9R6uBnL5IM%252BxEl%252BTmbgSwyWkSeM2vu1zrd7Yal0Bxw%252FsPxKSMM0ojo538MA4yTaMCWtsIbcbDl0mZaKzdDGVw2TsvHmQFotGsXh%252BtB9hG5CQOS5Jrg3gsh%252F1Kiafe668hODUJWM5n1oeeRW1pbPx3eWJi2PiZBICqO9BClxqsE4w9UF%252BdZRBV2dulUdwhHFCsSBKt6wQ3OfZrd4m8NBH5qFqWczXCvvQT8Xq7vXxzSQzfYQ6t79DoriH%252F9TOHhczdqFTmjuSL9gXbpLumoD35Mr%252FV1dJoPIc2HOoSu2IemCyg%252F8ejeTr15smhSb%252BqTmLHJjP%252BZhgfLpJAD6tYfXMNPyKN3mMqMdag78gtFgL0GMKaMIFGHXm0l2Wm%252B%252BNaEOewtys0P0G9d5QwSYfOPnbG%252FSUfb6Qp4vw%252BjHYrDfGupj0SSboQ3MwwuXPYqZEbSFW%252F1kDp1xhNcz%252B2okfbozsWyLk3Vp4jMoFZ2LdSWvAN0yoJgFy8z5Sobkv9K6jZTNzBm%252FrHa%252BxMEYcV%252FD4mggWGOTCln4Za9gAA%252F3tnRB%252F1VpAMlZYBriWbvlPDib0mpmpKngSBRPueFtizROgR2ze1U3Sykh6Hz%252BpvRv8Rs5xSCO2Ry5U5rCT%252BxVsW99iEu4CYkCZAbU3V5Nh3SClFlbRrsP4Oo94tIV0wiYzO1gY6lwGpIrhwxjyi666AiNyhVLIKRuLyJ7jQK6LmEVcS5GtldS0LUVRM7Lb5F36vX0bhjGA0LMHmanxKAWixTcPBm2ER2gWTGpDb4UFgSPSZgtm%252FLKE7%252FLg4bzcwCmTRkA6QwYuc5kBkw1CFsHlkPv6JK2aFOsT1fH%252BvSKux3xjJ8HrKcMhIrv1lOZwLsbZVbVJ6wccTBdYaxI%252FY%26Expires%3D1792249434&amp;app=com.google.Chrome&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="5eb7dfd47371492fb4158cf8118" src="//injections.adguard.org?ts=1792247035149&amp;name=AdGuard%20Extra&amp;type=user-script"></script></head>
+</head>
 <body>
 
 <header>
@@ -181,7 +181,9 @@
   var nav = document.getElementById('nav');
   var filter = document.getElementById('filter');
 
-  fetch('CHANGELOG.md', { cache: 'no-cache' })
+  // 时间戳 query 穿透各层缓存：浏览器 + 前置 CDN（响应带 max-age=600，
+  // 仅靠 cache:'no-cache' 绕不过中间层缓存）
+  fetch('CHANGELOG.md?v=' + Date.now(), { cache: 'no-cache' })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
     .then(function (md) {
       content.innerHTML = marked.parse(md);
