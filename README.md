@@ -6,6 +6,12 @@ DramaForge 的用户可见变更记录，按版本列出新增功能、体验改
 
 ## [Unreleased]
 
+## [1.13.3] - 2026-11-12
+
+### Changed
+
+- 前端运行监控升级：性能与报错上报现在附带事件发生的精确时间点，长卡顿任务会记录主要脚本来源，线上卡顿与报错的定位更快。
+
 ## [1.13.2] - 2026-11-09
 
 ### Fixed
@@ -420,4 +426,4 @@ DramaForge 的用户可见变更记录，按版本列出新增功能、体验改
 - 部分功能仍需服务端配合，暂不能作为完整生产能力使用。
 
 ---
-<sub>自动同步自内部仓库 · 更新于 2026-11-09 · <a href="https://hi.roshanca.com/dramaforge-changelog/">网页版</a></sub>
+<sub>自动同步自内部仓库 · 更新于 2026-11-14 · <a href="https://hi.roshanca.com/dramaforge-changelog/">网页版</a></sub>
