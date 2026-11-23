@@ -136,6 +136,25 @@
   .empty {
     color: var(--text-3); text-align: center; padding: 60px 0; font-size: 14.5px;
   }
+
+  /* ---------- 配图：条目内缩略卡片，点击放大 ---------- */
+  main img {
+    display: block; max-width: min(560px, 100%); max-height: 340px;
+    width: auto; height: auto; margin: 10px 0 4px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--code-bg); cursor: zoom-in;
+  }
+  .lightbox {
+    position: fixed; inset: 0; z-index: 50; cursor: zoom-out;
+    background: rgba(10, 12, 18, .8); backdrop-filter: blur(4px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 4vh 4vw;
+  }
+  .lightbox img {
+    max-width: 96vw; max-height: 86vh; width: auto; height: auto;
+    border-radius: 10px; box-shadow: 0 16px 56px rgba(0, 0, 0, .55);
+  }
+  .lightbox p { color: #d6d9e0; font-size: 13px; margin: 16px 0 0; }
   footer {
     margin-top: 60px; padding-top: 18px; border-top: 1px solid var(--border);
     color: var(--text-3); font-size: 12.5px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
@@ -223,6 +242,33 @@
       var map = { added: '新增', changed: '改进', fixed: '修复', removed: '移除', notes: '备注' };
       var key = h.className;
       if (map[key]) h.textContent = map[key];
+    });
+    // 配图：点击开全屏遮罩看原图（Esc / 点击任意处关闭）
+    content.querySelectorAll('img').forEach(function (img) {
+      img.addEventListener('click', function () {
+        var ov = document.createElement('div');
+        ov.className = 'lightbox';
+        var big = document.createElement('img');
+        big.src = img.currentSrc || img.src;
+        big.alt = img.alt || '';
+        ov.appendChild(big);
+        if (img.alt) {
+          var cap = document.createElement('p');
+          cap.textContent = img.alt;
+          ov.appendChild(cap);
+        }
+        var prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        function onKey(e) { if (e.key === 'Escape') close(); }
+        function close() {
+          ov.remove();
+          document.removeEventListener('keydown', onKey);
+          document.body.style.overflow = prevOverflow;
+        }
+        ov.addEventListener('click', close);
+        document.addEventListener('keydown', onKey);
+        document.body.appendChild(ov);
+      });
     });
   }
 
