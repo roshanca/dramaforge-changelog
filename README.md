@@ -6,6 +6,12 @@ DramaForge 的用户可见变更记录，按版本列出新增功能、体验改
 
 ## [Unreleased]
 
+## [1.18.1] - 2026-11-24
+
+### Changed
+
+- 模型选择器（编辑器底部 chip 与下拉列表）现在按产品族显示官方品牌图标——DeepSeek、Seedance/Seedream、Hailuo(MiniMax)、Qwen、通义万相(Wan)、百炼——不再统一显示占位转轮图标；服务端后续新增同族模型会自动匹配既有图标。
+
 ## [1.18.0] - 2026-11-24
 
 ### Changed
